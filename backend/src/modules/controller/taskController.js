@@ -47,11 +47,16 @@ const getTaskById = async (req, res) => {
 
 const getAllTasks = async (req, res) => {
     try {
-        const tasks = await Task.find();
+        const tasks = await Task.find({ isActive: true }) // Get only active tasks
+            .populate("createdBy", "username") // Fetch creator's username
+            .sort({ createdAt: -1 }) // Sort by newest first
+            .select("title description points createdBy createdAt"); // Select only required fields
+
         res.json(tasks);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
+
 
 export { createTask, updateTask, deleteTask, getTaskById, getAllTasks };
