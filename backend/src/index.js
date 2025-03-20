@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 
 import cookieParser from "cookie-parser";
-import Connection from "./shared/db.js";
+import Connection from "./modules/middleware/shared/db.js";
 import authRouting from "./modules/routes/auth.js";
 import adminRouting from "./modules/routes/adminRoutes.js";
 import userRouting from "./modules/routes/userRoutes.js";
