@@ -1,142 +1,109 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
-import axios, { AxiosError } from "axios";
+import React, { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import "react-toastify/dist/ReactToastify.css";
 
-// Interface for form data
-interface SignupFormData {
+interface UserFormData {
   name: string;
   email: string;
   password: string;
+  confirmPassword: string;
   username: string;
 }
 
-// Interface for API response
-interface SignupResponse {
-  _id: string;
-  name: string;
-  email: string;
-  username: string;
-  role: string;
-}
+const SignupForm: React.FC = () => {
+  const [formData, setFormData] = useState<UserFormData>({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    username: "",
+  });
 
-export default function Signup() {
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignupFormData>();
 
-  const [loading, setLoading] = useState(false);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-  const onSubmit = async (userData: SignupFormData) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setLoading(true);
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const { data } = await axios.post<SignupResponse>(
-        "http://localhost:5000/api/auth/signup",
-        userData,
-        { withCredentials: true }
+      const { confirmPassword, ...submitData } = formData;
+
+      // Set role as 'user' by default
+      const response = await axios.post(
+        "https://community-partner-app-1.onrender.com/api/auth/signup",
+        { ...submitData, role: "user" }, // Role is fixed
+        {
+          withCredentials: true,
+        }
       );
 
-      toast.success(`Welcome, ${data.name}! 🎉 Signup Successful.`);
-      navigate("/auth/dashboard"); // Redirect after signup
+      // Remove role before saving to local storage
+      const { role, ...userData } = response.data;
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      toast.success("Registration successful! Redirecting...");
+
+      // Redirect user to dashboard
+      navigate("/auth/dashboard");
     } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
-      toast.error(err.response?.data?.message || "Signup failed. Try again.");
+      if (axios.isAxiosError(error) && error.response) {
+        console.error("Signup Error:", error.response.data.errors);
+        toast.error(error.response.data.message || "Registration failed");
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="w-full max-w-md p-6 bg-white rounded-2xl shadow-xl">
-        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-          Signup
-        </h2>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Name
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+      <form onSubmit={handleSubmit}>
+        {(
+          ["name", "email", "username", "password", "confirmPassword"] as const
+        ).map((field) => (
+          <div key={field} className="mb-4">
+            <label className="block text-gray-700 mb-2" htmlFor={field}>
+              {field}
             </label>
             <input
-              type="text"
-              {...register("name", { required: "Name is required" })}
-              className="mt-1 p-3 w-full border rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              id={field}
+              type={field.includes("password") ? "password" : "text"}
+              name={field}
+              value={formData[field]}
+              onChange={handleChange}
+              className="w-full p-2 border rounded border-gray-300"
+              required
             />
-            {errors.name && (
-              <p className="text-red-500 text-sm">{errors.name.message}</p>
-            )}
           </div>
+        ))}
 
-          {/* Username */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Username
-            </label>
-            <input
-              type="text"
-              {...register("username", { required: "Username is required" })}
-              className="mt-1 p-3 w-full border rounded-lg focus:ring-blue-500 focus:border-blue-500"
-            />
-            {errors.username && (
-              <p className="text-red-500 text-sm">{errors.username.message}</p>
-            )}
-          </div>
-
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              type="email"
-              {...register("email", { required: "Email is required" })}
-              className="mt-1 p-3 w-full border rounded-lg focus:ring-blue-500 focus:border-blue-500"
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email.message}</p>
-            )}
-          </div>
-
-          {/* Password */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              type="password"
-              {...register("password", { required: "Password is required" })}
-              className="mt-1 p-3 w-full border rounded-lg focus:ring-blue-500 focus:border-blue-500"
-            />
-            {errors.password && (
-              <p className="text-red-500 text-sm">{errors.password.message}</p>
-            )}
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 font-semibold transition"
-            disabled={loading}
-          >
-            {loading ? "Signing up..." : "Signup"}
-          </button>
-        </form>
-
-        {/* Login Link */}
-        <p className="text-center text-gray-600 mt-4">
-          Already have an account?{" "}
-          <a href="/login" className="text-blue-500 hover:underline">
-            Log in
-          </a>
-        </p>
-      </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition duration-200"
+        >
+          {loading ? "Signing up..." : "Sign Up"}
+        </button>
+      </form>
     </div>
   );
-}
+};
+
+export default SignupForm;
