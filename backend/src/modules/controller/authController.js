@@ -91,7 +91,7 @@ const loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-
+    req.role = user.role
     // Set JWT as HTTP-only cookie
     res.cookie("token", generateToken(user._id), {
       httpOnly: true,
