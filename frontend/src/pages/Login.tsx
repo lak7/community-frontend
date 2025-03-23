@@ -261,8 +261,8 @@ import { LoginFormData, User } from '../interfaces/types';
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState<LoginFormData>({
-    email: '',
-    password: '',
+    email: 'paras022chatan@gamil.com',
+    password: 'paras0422',
   });
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -293,7 +293,9 @@ const Login: React.FC = () => {
       
       // Store user info (not token) in localStorage
       localStorage.setItem('user', JSON.stringify(response.data));
-
+      // document.cookie=JSON.stringify(response.data);
+      console.log("Lakshay ",response.data.role)
+      localStorage.setItem("userRole",response.data.role);
       // Redirect based on role
       if (response.data.role === 'admin') {
         navigate('/admin/dashboard');

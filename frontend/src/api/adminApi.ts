@@ -14,6 +14,7 @@ const apiClient = axios.create({
 
 // Task Management
 export const createTask = async (taskData: Omit<Task, '_id' | 'createdAt' | 'updatedAt'>) => {
+  console.log("Taskdata",taskData)
   const response = await apiClient.post('/admin/tasks', taskData);
   return response.data;
 };

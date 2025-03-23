@@ -29,6 +29,10 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
+app.get("/",(req,res)=>{
+  res.send("<h1> Hello </h1>")
+})
+
 // Routing
 app.use("/api/auth", authRouting);
 app.use("/api/admin", adminRouting);
