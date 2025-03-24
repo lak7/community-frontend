@@ -2,6 +2,7 @@ import React, { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import { LoginFormData, User } from "../interfaces/types";
+import { LINK } from "../constant";
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState<LoginFormData>({
@@ -28,7 +29,7 @@ const Login: React.FC = () => {
     try {
       console.log("Sending login request with:", formData);
 
-      const response = await api.post<User>("/api/auth/login", formData);
+      const response = await api.post<User>(`${LINK}/api/auth/login`, formData);
 
       console.log("Login response:", response.data);
 
