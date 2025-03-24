@@ -56,6 +56,14 @@ const AdminLayout: React.FC = () => {
                 Submissions
               </Link>
             </li>
+            <li>
+              <Link
+                to="/admin/leaderboard"
+                className={`block px-4 py-2 ${isActive("/admin/leaderboard")}`}
+              >
+                leaderboard
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>

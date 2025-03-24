@@ -19,7 +19,10 @@ export default function Leaderboard() {
         const response = await fetch(`${LINK}/api/leaderboard`);
         if (!response.ok) throw new Error("Failed to fetch leaderboard");
 
-        const data: User[] = await response.json();
+        let data: User[] = await response.json();
+
+        // Sort users by highest points
+        data.sort((a, b) => b.totalPoints - a.totalPoints);
         setUsers(data);
 
         // Get logged-in user ID from localStorage
@@ -50,7 +53,7 @@ export default function Leaderboard() {
 
       {/* Show logged-in user at the top if they exist */}
       {loggedInUser && (
-        <div className="p-4 bg-yellow-200 rounded-lg mb-4 text-center">
+        <div className="p-4 bg-yellow-200 rounded-lg mb-4 text-center border-2 border-black shadow-lg">
           <p className="text-lg font-bold">Your Rank</p>
           <p className="text-xl font-medium">{loggedInUser.username}</p>
           <p className="text-xl font-bold text-blue-600">
@@ -61,19 +64,31 @@ export default function Leaderboard() {
 
       {!loading && !error && (
         <ul className="space-y-4">
-          {users.map((user, index) => (
-            <li
-              key={index}
-              className={`flex justify-between p-3 rounded-lg ${
-                loggedInUser?._id === user._id
-                  ? "bg-yellow-300 font-bold"
-                  : "bg-gray-100"
-              }`}
-            >
-              <span>{user.username}</span>
-              <span>{user.totalPoints} pts</span>
-            </li>
-          ))}
+          {users.map((user, index) => {
+            let bgColor = "bg-gray-100"; // Default background
+
+            // Apply special colors for the top 3 users
+            if (index === 0) bgColor = "bg-yellow-400"; // Gold 🥇
+            else if (index === 1) bgColor = "bg-gray-300"; // Silver 🥈
+            else if (index === 2) bgColor = "bg-orange-400"; // Bronze 🥉
+
+            // Highlight logged-in user if they are not in the top 3
+            if (loggedInUser?._id === user._id && index >= 3) {
+              bgColor = "bg-yellow-300 font-bold";
+            }
+
+            return (
+              <li
+                key={user._id}
+                className={`flex justify-between p-3 rounded-lg font-medium ${bgColor}`}
+              >
+                <span>
+                  #{index + 1} {user.username}
+                </span>
+                <span>{user.totalPoints} pts</span>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

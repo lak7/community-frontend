@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { LINK } from "../../constant";
-// import React from "react";
+
 interface User {
   username: string;
   totalPoints: number;
 }
 
-export default function AdminLeadboard() {
+export default function AdminLeaderboard() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -17,7 +17,10 @@ export default function AdminLeadboard() {
         const response = await fetch(`${LINK}/api/leaderboard`);
         if (!response.ok) throw new Error("Failed to fetch leaderboard");
 
-        const data = await response.json();
+        const data: User[] = await response.json();
+
+        // Sort users by highest points first
+        data.sort((a, b) => b.totalPoints - a.totalPoints);
         setUsers(data);
       } catch (err) {
         setError((err as Error).message);
@@ -40,17 +43,28 @@ export default function AdminLeadboard() {
 
       {!loading && !error && (
         <ul className="space-y-4">
-          {users.map((user, index) => (
-            <li
-              key={index}
-              className="flex justify-between p-3 bg-gray-100 rounded-lg"
-            >
-              <span className="font-medium">{user.username}</span>
-              <span className="font-bold text-blue-600">
-                {user.totalPoints} pts
-              </span>
-            </li>
-          ))}
+          {users.map((user, index) => {
+            let bgColor = "bg-gray-100"; // Default background
+
+            if (index === 0) bgColor = "bg-yellow-400"; // 🥇 Gold (1st place)
+            else if (index === 1)
+              bgColor = "bg-gray-300"; // 🥈 Silver (2nd place)
+            else if (index === 2) bgColor = "bg-orange-400"; // 🥉 Bronze (3rd place)
+
+            return (
+              <li
+                key={index}
+                className={`flex justify-between p-3 rounded-lg font-medium ${bgColor}`}
+              >
+                <span>
+                  #{index + 1} {user.username}
+                </span>
+                <span className="font-bold text-blue-600">
+                  {user.totalPoints} pts
+                </span>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
