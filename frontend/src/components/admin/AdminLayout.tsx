@@ -1,8 +1,11 @@
 // import React from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import api from "../../api/index";
 
 const AdminLayout: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isActive = (path: string) => {
     return location.pathname.startsWith(path)
@@ -10,6 +13,16 @@ const AdminLayout: React.FC = () => {
       : "text-gray-600 hover:bg-gray-100";
   };
 
+  const handleLogout = async () => {
+    try {
+      await api.get(`/api/auth/logout`); // Call backend logout
+      localStorage.removeItem("user"); // Remove user from localStorage
+      localStorage.removeItem("userRole"); // Remove role data
+      navigate("/login"); // Redirect to login page
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
@@ -54,7 +67,10 @@ const AdminLayout: React.FC = () => {
             <h2 className="text-lg font-medium">Admin</h2>
           </div>
           <div>
-            <button className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">
+            <button
+              onClick={handleLogout}
+              className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
+            >
               Logout
             </button>
           </div>

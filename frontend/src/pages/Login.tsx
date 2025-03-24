@@ -40,7 +40,7 @@ const Login: React.FC = () => {
       localStorage.setItem("userRole", response.data.role);
       // Redirect based on role
       if (response.data.role === "admin") {
-        navigate("/admin/dashboard");
+        navigate("/admin");
       } else {
         navigate("/auth/dashboard");
       }

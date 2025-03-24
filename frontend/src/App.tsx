@@ -82,10 +82,7 @@ function App() {
           <Route path="tasks/new" element={<NewTaskPage />} />
           <Route path="tasks/:taskId/edit" element={<EditTaskPage />} />
           <Route path="submissions" element={<SubmissionsPage />} />
-          <Route
-            path="*"
-            element={<Navigate to="/admin/dashboard" replace />}
-          />
+          <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
       </Route>
 

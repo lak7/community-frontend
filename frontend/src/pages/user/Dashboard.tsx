@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import Cookies from "js-cookie";
 import React from "react";
+import api from "../../api"; // Import Axios instance
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -14,6 +14,22 @@ const Dashboard: React.FC = () => {
       setPoints(user.totalPoints || 0); // Default to 0 if not found
     }
   }, []);
+
+  // ✅ Handle Logout Function
+  const handleLogout = async () => {
+    try {
+      await api.get("/api/auth/logout"); // Call logout API
+
+      // Clear localStorage
+      localStorage.removeItem("user");
+      localStorage.removeItem("userRole");
+
+      // Redirect to login page
+      navigate("/login");
+    } catch (error: any) {
+      console.error("Logout failed:", error.response?.data || error.message);
+    }
+  };
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
@@ -30,6 +46,18 @@ const Dashboard: React.FC = () => {
         style={{ margin: "10px", padding: "10px 20px" }}
       >
         All Tasks
+      </button>
+      {/* ✅ Logout Button */}
+      <button
+        onClick={handleLogout}
+        style={{
+          margin: "10px",
+          padding: "10px 20px",
+          backgroundColor: "red",
+          color: "white",
+        }}
+      >
+        Logout
       </button>
     </div>
   );
