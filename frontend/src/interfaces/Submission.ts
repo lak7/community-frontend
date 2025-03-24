@@ -1,3 +1,5 @@
+import { Task } from "./Task"; // Adjust the path as needed
+
 export interface Submission {
   _id: string;
   taskId: string;

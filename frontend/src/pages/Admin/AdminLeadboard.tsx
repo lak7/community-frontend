@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { LINK } from "../../constant";
-import React from "react";
+// import React from "react";
 interface User {
   username: string;
   totalPoints: number;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import TaskForm from "../../components/admin/TaskForm";
 import { Task } from "../../interfaces/Task";
+import { LINK } from "../../constant";
 
 const EditTaskPage: React.FC = () => {
   const { taskId } = useParams<{ taskId: string }>();
@@ -13,12 +14,9 @@ const EditTaskPage: React.FC = () => {
   useEffect(() => {
     const fetchTask = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/tasks/${taskId}`,
-          {
-            credentials: "include",
-          }
-        );
+        const response = await fetch(`${LINK}/api/tasks/${taskId}`, {
+          credentials: "include",
+        });
 
         if (!response.ok) {
           throw new Error("Failed to fetch task");

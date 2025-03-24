@@ -87,7 +87,8 @@ export default function Tasks() {
   const [error, setError] = useState("");
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [image, setImage] = useState<File | null>(null);
-  const [status, setStatus] = useState("pending");
+  // const [status, setStatus] = useState("pending");
+  const status  = "pending"
 
   useEffect(() => {
     const fetchTasks = async () => {
