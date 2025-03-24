@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import api from "../api"; // Use configured axios instance
 import "react-toastify/dist/ReactToastify.css";
-
+import axios from "axios";
 interface UserFormData {
   name: string;
   email: string;
@@ -42,26 +42,21 @@ const SignupForm: React.FC = () => {
     try {
       const { confirmPassword, ...submitData } = formData;
 
-      // Set role as 'user' by default
-      const response = await axios.post(
-        "https://community-partner-app-1.onrender.com/api/auth/signup",
-        { ...submitData, role: "user" }, // Role is fixed
-        {
-          withCredentials: true,
-        }
-      );
+      // Send signup request
+      const response = await api.post("/api/auth/signup", {
+        ...submitData,
+        role: "user",
+      });
 
-      // Remove role before saving to local storage
-      const { role, ...userData } = response.data;
-      localStorage.setItem("user", JSON.stringify(userData));
+      // Store user data in localStorage
+      localStorage.setItem("user", JSON.stringify(response.data));
+      localStorage.setItem("userRole", response.data.role); // Store role
 
       toast.success("Registration successful! Redirecting...");
-
-      // Redirect user to dashboard
       navigate("/auth/dashboard");
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        console.error("Signup Error:", error.response.data.errors);
+        console.error("Signup Error:", error.response.data);
         toast.error(error.response.data.message || "Registration failed");
       } else {
         toast.error("Something went wrong. Please try again.");
