@@ -16,12 +16,11 @@ const app = express();
 
 // to handle cors
 const corsOptions = {
-  origin: ["http://localhost:5173"], // Adjust as needed
+  origin: ["http://localhost:5173", "https://community-partner.onrender.com"], // Adjust as needed
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
   optionsSuccessStatus: 200,
 };
-
 
 // Middleware
 
@@ -29,9 +28,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-app.get("/",(req,res)=>{
-  res.send("<h1> Hello </h1>")
-})
+app.get("/", (req, res) => {
+  res.send("<h1> Hello </h1>");
+});
 
 // Routing
 app.use("/api/auth", authRouting);
