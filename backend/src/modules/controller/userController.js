@@ -4,31 +4,24 @@ import { User } from "../models/User.js";
 
 const completeTask = async (req, res) => {
     try {
-        const task = await Task.findById(req.params.taskId);
-        if (!task)
-            return res.status(404).json({ error: 'Task not found' });
+        const { taskId } = req.params;
+        const { imageUrl } = req.body; // Frontend sends URL from upload
 
-        // Check for existing approved completion
-        const existingApproved = await TaskCompletion.findOne({
-            user: req.user.id,
-            task: task._id,
-            status: 'approved'
-        });
+        const task = await Task.findById(taskId);
+        if (!task) throw new Error('Task not found');
 
-        if (existingApproved)
-            return res.status(400).json({ error: 'Task already completed' });
-
-        // Create pending completion
+        // Create completion with image
         const submission = await TaskCompletion.create({
             user: req.user.id,
-            task: task._id,
+            task: taskId,
             pointsEarned: task.points,
+            image: imageUrl,
             status: 'pending'
         });
 
-        res.status(201).json({
-            message: 'Task submitted for admin approval',
-            submissionId: submission._id
+        res.json({
+            message: 'Task submitted for approval',
+            submission
         });
     } catch (error) {
         res.status(400).json({ error: error.message });

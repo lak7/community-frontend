@@ -9,6 +9,7 @@ import adminRouting from "./modules/routes/adminRoutes.js";
 import userRouting from "./modules/routes/userRoutes.js";
 import taskRouting from "./modules/routes/taskRoutes.js";
 import leaderboardRouting from "./modules/routes/leaderboardRoutes.js";
+import uploadRouting from "./modules/routes/uploadRoutes.js";
 
 // Config
 dotenv.config();
@@ -38,6 +39,7 @@ app.use("/api/admin", adminRouting);
 app.use("/api/user", userRouting);
 app.use("/api/tasks", taskRouting);
 app.use("/api/leaderboard", leaderboardRouting);
+app.use("/api/uploads", uploadRouting);
 
 app.listen(process.env.PORTNUMBER || 5000, async () => {
   try {

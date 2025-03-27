@@ -3,6 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const TaskCompletionSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     task: { type: Schema.Types.ObjectId, ref: 'Task', required: true },
+    image: { type: String, required: true }, // Cloudinary URL
     status: {
         type: String,
         enum: ['pending', 'approved', 'rejected'],

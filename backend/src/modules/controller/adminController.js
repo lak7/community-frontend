@@ -6,7 +6,8 @@ const getPendingSubmissions = async (req, res) => {
     try {
         const submissions = await TaskCompletion.find({ status: 'pending' })
             .populate('user', 'username')
-            .populate('task', 'title points');
+            .populate('task', 'title points')
+            .select('image pointsEarned completedAt');
 
         res.json(submissions);
     } catch (error) {
