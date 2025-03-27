@@ -39,7 +39,7 @@ app.use("/api/admin", adminRouting);
 app.use("/api/user", userRouting);
 app.use("/api/tasks", taskRouting);
 app.use("/api/leaderboard", leaderboardRouting);
-app.use("/api/uploads", uploadRouting);
+app.use("/api/upload", uploadRouting);
 
 app.listen(process.env.PORTNUMBER || 5000, async () => {
   try {

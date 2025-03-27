@@ -1,33 +1,35 @@
 import { v2 as cloudinary } from 'cloudinary';
-import multer from 'multer';
+import { Readable } from 'stream';
 
-// Configure Cloudinary
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true // Add this for HTTPS
 });
 
-// Multer config for memory storage
-const storage = multer.memoryStorage();
-const upload = multer({
-    storage,
-    limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
-});
-
-// Upload to Cloudinary
-const uploadToCloudinary = async (fileBuffer) => {
+const uploadToCloudinary = async (buffer) => {
     return new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-            { folder: 'task-submissions' },
+        const uploadStream = cloudinary.uploader.upload_stream(
+            {
+                folder: 'task-submissions',
+                resource_type: 'auto'
+            },
             (error, result) => {
-                if (result) resolve(result);
-                else reject(error);
+                if (error) {
+                    console.error('Cloudinary upload error:', error);
+                    reject(error);
+                } else {
+                    resolve(result);
+                }
             }
         );
 
-        stream.end(fileBuffer);
+        const bufferStream = new Readable();
+        bufferStream.push(buffer);
+        bufferStream.push(null);
+        bufferStream.pipe(uploadStream);
     });
 };
 
-export { upload, uploadToCloudinary };
+export { uploadToCloudinary };
