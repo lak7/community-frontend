@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { LINK } from "../../constant";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Task {
   _id: string;
@@ -11,12 +12,8 @@ interface Task {
   createdAt: string;
 }
 
-interface SubmissionResponse {
-  message: string;
-  submissionId: string;
-}
-
 export default function Tasks() {
+  const navigate = useNavigate();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -98,31 +95,30 @@ export default function Tasks() {
     setUploading(true);
 
     try {
-      // Step 1: Upload image to Cloudinary
+      // 1. Upload image (already working)
       const imageUrl = await uploadImage(image);
 
-      // Step 2: Submit task completion with image URL
+      // 2. Submit task - cookies will auto-send
       const submissionResponse = await fetch(
         `${LINK}/api/user/tasks/${selectedTask._id}/complete`,
         {
           method: "POST",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            imageUrl: imageUrl,
-          }),
+          body: JSON.stringify({ imageUrl }),
         }
       );
 
       if (!submissionResponse.ok) {
-        throw new Error("Failed to submit task");
+        const errorData = await submissionResponse.json();
+        throw new Error(errorData.message || "Failed to submit task");
       }
 
-      const data: SubmissionResponse = await submissionResponse.json();
-      alert(`Task submitted for approval! Submission ID: ${data.submissionId}`);
-      setSelectedTask(null);
-      setImage(null);
+      // 3. On success - show alert and redirect
+      alert("Task submitted successfully! Redirecting to dashboard...");
+      navigate("/auth/dashboard");
     } catch (error) {
       console.error("Submission error:", error);
       alert(`Error: ${(error as Error).message}`);
