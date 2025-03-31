@@ -2,3 +2,129 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --primary-glow: #0070f3;
+  --secondary-glow: #00c7b7;
+  --accent-glow: #ff4081;
+  --background-dark: #121212;
+  --surface-dark: #1e1e1e;
+  --card-dark: #252525;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+}
+
+body {
+  background-color: var(--background-dark);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", sans-serif;
+}
+
+/* Custom button styles with glow effect */
+.glow-button {
+  position: relative;
+  background-color: #1a1a1a;
+  color: white;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.glow-button:before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  z-index: -1;
+  background: linear-gradient(
+    45deg,
+    var(--primary-glow),
+    var(--secondary-glow),
+    var(--accent-glow)
+  );
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.glow-button:hover:before {
+  opacity: 1;
+}
+
+.glow-button:hover {
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.glow-button.blue:hover {
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.glow-button.green:hover {
+  box-shadow: 0 0 15px var(--secondary-glow);
+}
+
+.glow-button.red:hover {
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* Card with glow effect */
+.glow-card {
+  background-color: var(--card-dark);
+  border-radius: 0.5rem;
+  border: 1px solid #333;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.glow-card:hover {
+  box-shadow: 0 0 15px rgba(0, 112, 243, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Input field styles */
+.dark-input {
+  background-color: #2d2d2d;
+  border: 1px solid #444;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.dark-input:focus {
+  border-color: var(--primary-glow);
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.25);
+}
+
+/* Glass morphism effect for containers */
+.glass-container {
+  background: rgba(30, 30, 30, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+/* Neon text effect */
+.neon-text {
+  text-shadow: 0 0 5px var(--primary-glow), 0 0 10px var(--primary-glow),
+    0 0 15px var(--primary-glow);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--card-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
