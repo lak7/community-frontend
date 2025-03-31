@@ -128,54 +128,113 @@ export default function Tasks() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-xl rounded-lg mt-10">
-      <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-        Available Tasks
-      </h2>
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black p-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="glass-container p-8 rounded-lg mb-6">
+          <h2 className="text-3xl font-bold text-center mb-8 neon-text">
+            Available Tasks
+          </h2>
 
-      {loading && <p className="text-center">Loading tasks...</p>}
-      {error && <p className="text-center text-red-500">{error}</p>}
-
-      {!loading && !error && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {tasks.map((task) => (
-            <div
-              key={task._id}
-              className="p-4 border rounded-lg bg-gray-100 shadow-sm cursor-pointer hover:bg-gray-200 transition-colors"
-              onClick={() => handleTaskClick(task)}
-            >
-              <h3 className="text-xl font-semibold">{task.title}</h3>
-              <p className="text-gray-600 line-clamp-2">{task.description}</p>
-              <div className="mt-2 flex justify-between items-center">
-                <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                  {task.points} pts
-                </span>
-                <span className="text-sm text-gray-500">
-                  {task.createdBy?.username || "System"}
-                </span>
-              </div>
+          {loading && (
+            <div className="flex justify-center items-center py-12">
+              <svg
+                className="animate-spin h-10 w-10 text-blue-500"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
             </div>
-          ))}
+          )}
+
+          {error && (
+            <div className="bg-red-900/50 border border-red-700 text-white p-4 rounded-lg text-center">
+              {error}
+            </div>
+          )}
+
+          {!loading && !error && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {tasks.map((task) => (
+                <div
+                  key={task._id}
+                  onClick={() => handleTaskClick(task)}
+                  className="glow-card p-5 cursor-pointer hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300"
+                >
+                  <h3 className="text-xl font-semibold mb-2">{task.title}</h3>
+                  <p className="text-gray-400 line-clamp-3 mb-4">
+                    {task.description}
+                  </p>
+                  <div className="flex justify-between items-center">
+                    <span className="px-3 py-1 bg-blue-900/50 text-blue-300 rounded-full text-sm border border-blue-800/50">
+                      {task.points} pts
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      {task.createdBy?.username || "System"}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Task Submission Modal */}
       {selectedTask && (
-        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            <h2 className="text-2xl font-bold mb-2">{selectedTask.title}</h2>
-            <p className="text-gray-600 mb-4">{selectedTask.description}</p>
-            <p className="mb-4">
-              <span className="font-semibold">Points:</span>{" "}
-              {selectedTask.points}
-            </p>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+          <div className="glass-container p-6 rounded-lg shadow-lg w-full max-w-md relative">
+            <button
+              onClick={() => setSelectedTask(null)}
+              className="absolute top-3 right-3 text-gray-400 hover:text-white"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <h2 className="text-2xl font-bold mb-2 neon-text">
+              {selectedTask.title}
+            </h2>
+            <p className="text-gray-300 mb-4">{selectedTask.description}</p>
+
+            <div className="bg-blue-900/30 px-4 py-2 rounded-lg border border-blue-800/50 inline-block mb-4">
+              <span className="font-semibold text-blue-300">
+                {selectedTask.points} Points
+              </span>
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Upload Proof (Image)
               </label>
-              <div className="flex items-center justify-center w-full">
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+
+              <div className="border-2 border-dashed border-gray-700 rounded-lg p-2">
+                <label className="flex flex-col items-center justify-center w-full h-32 cursor-pointer bg-gray-800/50 hover:bg-gray-800 rounded-lg transition-colors">
                   {image ? (
                     <div className="relative w-full h-full">
                       <img
@@ -188,15 +247,15 @@ export default function Tasks() {
                           e.stopPropagation();
                           setImage(null);
                         }}
-                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                        className="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center"
                       >
                         ×
                       </button>
                     </div>
                   ) : (
-                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <div className="flex flex-col items-center justify-center py-3">
                       <svg
-                        className="w-8 h-8 mb-4 text-gray-500"
+                        className="w-8 h-8 mb-3 text-gray-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -208,11 +267,10 @@ export default function Tasks() {
                           d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                         />
                       </svg>
-                      <p className="mb-2 text-sm text-gray-500">
-                        <span className="font-semibold">Click to upload</span>{" "}
-                        or drag and drop
+                      <p className="text-sm text-gray-400">
+                        Click to upload or drag and drop
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 mt-1">
                         JPEG, PNG (MAX. 5MB)
                       </p>
                     </div>
@@ -230,7 +288,7 @@ export default function Tasks() {
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setSelectedTask(null)}
-                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                className="px-4 py-2 border border-gray-700 rounded-md text-gray-300 hover:bg-gray-800"
                 disabled={uploading}
               >
                 Cancel
@@ -238,11 +296,11 @@ export default function Tasks() {
               <button
                 onClick={handleSubmit}
                 disabled={!image || uploading}
-                className={`px-4 py-2 rounded-md text-white ${
+                className={`glow-button ${
                   !image || uploading
-                    ? "bg-blue-300 cursor-not-allowed"
-                    : "bg-blue-500 hover:bg-blue-600"
-                }`}
+                    ? "opacity-50 cursor-not-allowed"
+                    : "green"
+                } px-4 py-2 rounded-md`}
               >
                 {uploading ? (
                   <span className="flex items-center">

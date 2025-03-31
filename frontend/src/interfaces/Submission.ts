@@ -5,7 +5,7 @@ export interface Submission {
   taskId: string;
   userId: string;
   submissionContent: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: "pending" | "approved" | "rejected";
   feedback?: string;
   submittedAt: Date;
   reviewedAt?: Date;
@@ -14,5 +14,5 @@ export interface Submission {
     _id: string;
     name: string;
     email: string;
-  }
-};
+  };
+}
