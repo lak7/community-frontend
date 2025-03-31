@@ -70,6 +70,7 @@ export default function Tasks() {
       });
 
       const data = await response.json();
+      console.log("Upload Response:", data); // Debugging log
 
       if (!response.ok) {
         throw new Error(data.error || "Upload failed");
@@ -78,11 +79,8 @@ export default function Tasks() {
       return data.url;
     } catch (error) {
       console.error("Upload error:", error);
-      if (error instanceof Error) {
-        throw new Error(`Upload failed: ${error.message}`);
-      } else {
-        throw new Error("Upload failed: Unknown error");
-      }
+      alert(`Upload failed: ${(error as Error).message}`);
+      throw new Error("Upload failed: Unknown error");
     }
   };
 

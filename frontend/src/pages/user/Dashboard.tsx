@@ -17,7 +17,7 @@ const Dashboard: React.FC = () => {
     }
   }, []);
 
-  // Handle Logout Function
+  // Handle Logout Functionn
   const handleLogout = async () => {
     try {
       await api.get("/api/auth/logout"); // Call logout API

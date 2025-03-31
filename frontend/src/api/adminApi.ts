@@ -42,5 +42,6 @@ export const approveSubmission = async (submissionId: string, feedback?: string)
 
 export const rejectSubmission = async (submissionId: string, feedback: string) => {
   const response = await apiClient.put(`/admin/submissions/${submissionId}/reject`, { feedback });
+  console.log("response: ",response.data)
   return response.data;
 };

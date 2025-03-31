@@ -87,7 +87,7 @@ export const TaskList: React.FC = () => {
                           : "bg-gray-100 text-gray-800"
                       }`}
                     >
-                      {task.isActive ? "InActive" : "active"}
+                      {task.isActive ? "InActive" : "Active"}
                     </span>
                   </td>
                   <td className="py-3 px-4">

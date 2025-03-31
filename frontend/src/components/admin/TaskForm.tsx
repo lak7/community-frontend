@@ -64,7 +64,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow">
+    <div className="bg-white p-6 rounded shadow text-black">
       <h2 className="text-xl font-bold mb-4">
         {isEditing ? "Edit Task" : "Create New Task"}
       </h2>
@@ -73,33 +73,33 @@ const TaskForm: React.FC<TaskFormProps> = ({
         <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>
       )}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="text-black">
         <div className="mb-4">
-          <label className="block mb-1">Title</label>
+          <label className="block mb-1 text-black">Title</label>
           <input
             type="text"
             name="title"
             value={task.title}
             onChange={handleChange}
             required
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded text-black"
           />
         </div>
 
         <div className="mb-4">
-          <label className="block mb-1">Description</label>
+          <label className="block mb-1 text-black">Description</label>
           <textarea
             name="description"
             value={task.description}
             onChange={handleChange}
             required
             rows={4}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded text-black"
           />
         </div>
 
         <div className="mb-4">
-          <label className="block mb-1">Points</label>
+          <label className="block mb-1 text-black">Points</label>
           <input
             type="number"
             name="points"
@@ -107,12 +107,12 @@ const TaskForm: React.FC<TaskFormProps> = ({
             onChange={handleChange}
             required
             min={0}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded text-black"
           />
         </div>
 
         <div className="mb-4">
-          <label className="flex items-center">
+          <label className="flex items-center text-black">
             <input
               type="checkbox"
               name="isActive"
