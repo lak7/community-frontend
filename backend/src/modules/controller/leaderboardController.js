@@ -4,7 +4,7 @@ export const getLeaderboard = async (req, res) => {
   try {
     const users = await User.find()
       .sort({ totalPoints: -1 })
-      .limit(10)
+      .limit(30)
       .select("username totalPoints");
 
     res.json(users);
