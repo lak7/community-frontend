@@ -9,8 +9,8 @@ const AdminLayout: React.FC = () => {
 
   const isActive = (path: string) => {
     return location.pathname.startsWith(path)
-      ? "bg-blue-500 text-white"
-      : "text-gray-600 hover:bg-gray-100";
+      ? "bg-gray-800 text-white"
+      : "text-gray-300 hover:bg-gray-800 hover:text-white transition-colors";
   };
 
   const handleLogout = async () => {
@@ -24,18 +24,20 @@ const AdminLayout: React.FC = () => {
     }
   };
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-black text-white">
       {/* Sidebar */}
-      <div className="w-64 bg-white shadow-md">
-        <div className="p-4 border-b">
-          <h1 className="text-xl font-bold">Admin Panel</h1>
+      <div className="w-64 bg-gray-900 border-r border-gray-800">
+        <div className="p-6 border-b border-gray-800">
+          <h1 className="text-xl font-bold tracking-wide">ADMIN</h1>
         </div>
-        <nav className="py-4">
-          <ul>
+        <nav className="py-6">
+          <ul className="space-y-2">
             <li>
               <Link
                 to="/admin"
-                className={`block px-4 py-2 ${isActive("/admin")}`}
+                className={`flex items-center px-6 py-3 text-sm font-medium ${isActive(
+                  "/admin"
+                )}`}
               >
                 Dashboard
               </Link>
@@ -43,7 +45,9 @@ const AdminLayout: React.FC = () => {
             <li>
               <Link
                 to="/admin/tasks"
-                className={`block px-4 py-2 ${isActive("/admin/tasks")}`}
+                className={`flex items-center px-6 py-3 text-sm font-medium ${isActive(
+                  "/admin/tasks"
+                )}`}
               >
                 Tasks
               </Link>
@@ -51,7 +55,9 @@ const AdminLayout: React.FC = () => {
             <li>
               <Link
                 to="/admin/submissions"
-                className={`block px-4 py-2 ${isActive("/admin/submissions")}`}
+                className={`flex items-center px-6 py-3 text-sm font-medium ${isActive(
+                  "/admin/submissions"
+                )}`}
               >
                 Submissions
               </Link>
@@ -59,9 +65,11 @@ const AdminLayout: React.FC = () => {
             <li>
               <Link
                 to="/admin/leaderboard"
-                className={`block px-4 py-2 ${isActive("/admin/leaderboard")}`}
+                className={`flex items-center px-6 py-3 text-sm font-medium ${isActive(
+                  "/admin/leaderboard"
+                )}`}
               >
-                leaderboard
+                Leaderboard
               </Link>
             </li>
           </ul>
@@ -69,22 +77,22 @@ const AdminLayout: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1">
-        <header className="bg-white p-4 shadow-sm flex justify-between items-center">
+      <div className="flex-1 flex flex-col">
+        <header className="bg-gray-900 p-4 border-b border-gray-800 flex justify-between items-center">
           <div>
-            <h2 className="text-lg font-medium">Admin</h2>
+            <h2 className="text-lg font-medium">Admin Panel</h2>
           </div>
           <div>
             <button
               onClick={handleLogout}
-              className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
+              className="bg-gray-800 px-4 py-2 rounded-md text-sm hover:bg-gray-700 transition-colors"
             >
               Logout
             </button>
           </div>
         </header>
 
-        <main>
+        <main className="flex-1 bg-black">
           <Outlet />
         </main>
       </div>

@@ -31,24 +31,30 @@ const SubmissionList: React.FC = () => {
   };
 
   if (loading)
-    return <div className="text-center p-4">Loading submissions...</div>;
+    return (
+      <div className="text-center p-4 text-gray-300">
+        Loading submissions...
+      </div>
+    );
 
   return (
-    <div className="bg-white rounded shadow">
-      <div className="p-4 border-b">
-        <h2 className="text-xl font-bold">Pending Submissions</h2>
+    <div>
+      <div className="p-4 border-b border-gray-800 mb-4">
+        <h2 className="text-xl font-bold text-white">Pending Submissions</h2>
       </div>
 
       {error && (
-        <div className="bg-red-100 text-red-700 p-3 m-4 rounded">{error}</div>
+        <div className="bg-red-900 text-red-300 p-4 mb-4 rounded-md">
+          {error}
+        </div>
       )}
 
       {submissions.length === 0 ? (
-        <div className="p-4 text-center text-gray-500">
+        <div className="p-6 text-center text-gray-400">
           No pending submissions found.
         </div>
       ) : (
-        <div className="divide-y">
+        <div className="divide-y divide-gray-800">
           {submissions.map((submission) => (
             <SubmissionItem
               key={submission._id}

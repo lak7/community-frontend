@@ -3,31 +3,33 @@ import { Link } from "react-router-dom";
 
 const AdminDashboard: React.FC = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-8 text-white">Admin Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded shadow">
-          <h2 className="text-xl font-bold mb-2">Tasks</h2>
-          <p className="text-gray-600 mb-4">
-            Manage tasks for users to complete
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-gray-900 p-6 rounded-lg border border-gray-800">
+          <h2 className="text-xl font-bold mb-3 text-white">Manage Tasks</h2>
+          <p className="text-gray-400 mb-5">
+            Create, edit and delete tasks for users to complete
           </p>
           <Link
             to="/admin/tasks"
-            className="bg-blue-500 text-white px-4 py-2 rounded block text-center hover:bg-blue-600"
+            className="bg-gray-800 text-white px-5 py-3 rounded-md block text-center hover:bg-gray-700 transition-colors"
           >
             View Tasks
           </Link>
         </div>
 
-        <div className="bg-white p-6 rounded shadow">
-          <h2 className="text-xl font-bold mb-2">Submissions</h2>
-          <p className="text-gray-600 mb-4">
-            Review and approve user submissions
+        <div className="bg-gray-900 p-6 rounded-lg border border-gray-800">
+          <h2 className="text-xl font-bold mb-3 text-white">
+            Review Submissions
+          </h2>
+          <p className="text-gray-400 mb-5">
+            Approve or reject user submissions
           </p>
           <Link
             to="/admin/submissions"
-            className="bg-green-500 text-white px-4 py-2 rounded block text-center hover:bg-green-600"
+            className="bg-gray-800 text-white px-5 py-3 rounded-md block text-center hover:bg-gray-700 transition-colors"
           >
             View Submissions
           </Link>

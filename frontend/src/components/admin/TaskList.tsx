@@ -43,73 +43,91 @@ export const TaskList: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="text-center p-4">Loading tasks...</div>;
+  if (loading)
+    return (
+      <div className="text-center p-4 text-gray-300">Loading tasks...</div>
+    );
 
   return (
-    <div className="bg-white rounded shadow">
-      <div className="flex justify-between items-center p-4 border-b">
-        <h2 className="text-xl font-bold">Tasks</h2>
+    <div>
+      <div className="flex justify-between items-center p-4 border-b border-gray-800 mb-4">
+        <h2 className="text-xl font-bold text-white">Tasks</h2>
         <Link
           to="/admin/tasks/new"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors"
         >
           Create New Task
         </Link>
       </div>
 
       {error && (
-        <div className="bg-red-100 text-red-700 p-3 m-4 rounded">{error}</div>
+        <div className="bg-red-900 text-red-300 p-4 mb-4 rounded-md">
+          {error}
+        </div>
       )}
 
       {tasks.length === 0 ? (
-        <div className="p-4 text-center text-gray-500">No tasks found.</div>
+        <div className="p-6 text-center text-gray-400">No tasks found.</div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="min-w-full">
-            <thead className="bg-gray-50">
+          <table className="min-w-full border-collapse">
+            <thead className="bg-gray-800">
               <tr>
-                <th className="py-3 px-4 text-left">Title</th>
-                <th className="py-3 px-4 text-left">Points</th>
-                <th className="py-3 px-4 text-left">Status</th>
-                <th className="py-3 px-4 text-left">Actions</th>
+                <th className="py-3 px-4 text-left text-sm font-medium text-gray-300 border-b border-gray-700">
+                  Title
+                </th>
+                <th className="py-3 px-4 text-left text-sm font-medium text-gray-300 border-b border-gray-700">
+                  Points
+                </th>
+                <th className="py-3 px-4 text-left text-sm font-medium text-gray-300 border-b border-gray-700">
+                  Status
+                </th>
+                <th className="py-3 px-4 text-left text-sm font-medium text-gray-300 border-b border-gray-700">
+                  Actions
+                </th>
               </tr>
             </thead>
-            <tbody className="divide-y">
+            <tbody className="divide-y divide-gray-800">
               {tasks.map((task) => (
-                <tr key={task._id} className="hover:bg-gray-50">
-                  <td className="py-3 px-4">{task.title}</td>
-                  <td className="py-3 px-4">{task.points}</td>
+                <tr
+                  key={task._id}
+                  className="hover:bg-gray-800 transition-colors"
+                >
+                  <td className="py-3 px-4 text-white">{task.title}</td>
+                  <td className="py-3 px-4 text-white">{task.points}</td>
                   <td className="py-3 px-4">
                     <span
-                      className={`inline-block px-2 py-1 text-xs rounded ${
+                      className={`inline-block px-2 py-1 text-xs rounded-md ${
                         task.isActive
-                          ? "bg-green-100 text-green-800"
-                          : "bg-gray-100 text-gray-800"
+                          ? "bg-green-900 text-green-300"
+                          : "bg-gray-800 text-gray-400"
                       }`}
                     >
-                      {task.isActive ? "InActive" : "Active"}
+                      {task.isActive ? "Active" : "Inactive"}
                     </span>
                   </td>
                   <td className="py-3 px-4">
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                       <Link
                         to={`/admin/tasks/${task._id}/edit`}
-                        className="text-blue-500 hover:underline"
+                        className="text-blue-400 hover:text-blue-300 transition-colors"
                       >
                         Edit
                       </Link>
                       {showDeleteConfirm === task._id ? (
                         <div className="flex items-center gap-2">
-                          <span className="text-sm">Confirm?</span>
+                          <span className="text-sm text-gray-400">
+                            Confirm?
+                          </span>
                           <button
                             onClick={() => handleDelete(task._id)}
-                            className="text-red-500 hover:underline"
+                            className="text-red-400 hover:text-red-300 transition-colors"
                           >
                             Yes
                           </button>
                           <button
                             onClick={() => setShowDeleteConfirm(null)}
-                            className="text-gray-500 hover:underline"
+                            className="text-gray-400 hover:text-gray-300 transition-colors"
                           >
                             No
                           </button>
@@ -117,7 +135,7 @@ export const TaskList: React.FC = () => {
                       ) : (
                         <button
                           onClick={() => setShowDeleteConfirm(task._id)}
-                          className="text-red-500 hover:underline"
+                          className="text-red-400 hover:text-red-300 transition-colors"
                         >
                           Delete
                         </button>

@@ -64,42 +64,40 @@ const TaskForm: React.FC<TaskFormProps> = ({
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow text-black">
-      <h2 className="text-xl font-bold mb-4">
-        {isEditing ? "Edit Task" : "Create New Task"}
-      </h2>
-
+    <div>
       {error && (
-        <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>
+        <div className="bg-red-900 text-red-300 p-4 rounded-md mb-6">
+          {error}
+        </div>
       )}
 
-      <form onSubmit={handleSubmit} className="text-black">
-        <div className="mb-4">
-          <label className="block mb-1 text-black">Title</label>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-5">
+          <label className="block mb-2 text-gray-300">Title</label>
           <input
             type="text"
             name="title"
             value={task.title}
             onChange={handleChange}
             required
-            className="w-full p-2 border rounded text-black"
+            className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-white focus:outline-none focus:border-gray-600"
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block mb-1 text-black">Description</label>
+        <div className="mb-5">
+          <label className="block mb-2 text-gray-300">Description</label>
           <textarea
             name="description"
             value={task.description}
             onChange={handleChange}
             required
             rows={4}
-            className="w-full p-2 border rounded text-black"
+            className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-white focus:outline-none focus:border-gray-600"
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block mb-1 text-black">Points</label>
+        <div className="mb-5">
+          <label className="block mb-2 text-gray-300">Points</label>
           <input
             type="number"
             name="points"
@@ -107,35 +105,35 @@ const TaskForm: React.FC<TaskFormProps> = ({
             onChange={handleChange}
             required
             min={0}
-            className="w-full p-2 border rounded text-black"
+            className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-white focus:outline-none focus:border-gray-600"
           />
         </div>
 
-        <div className="mb-4">
-          <label className="flex items-center text-black">
+        <div className="mb-6">
+          <label className="flex items-center text-gray-300">
             <input
               type="checkbox"
               name="isActive"
               checked={task.isActive}
               onChange={handleChange}
-              className="mr-2"
+              className="mr-3 h-5 w-5 rounded border-gray-700 bg-gray-800"
             />
             Active
           </label>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-gray-800 text-white px-5 py-3 rounded-md hover:bg-gray-700 transition-colors"
           >
             {loading ? "Saving..." : isEditing ? "Update Task" : "Create Task"}
           </button>
           <button
             type="button"
             onClick={() => navigate("/admin/tasks")}
-            className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+            className="bg-gray-700 text-gray-300 px-5 py-3 rounded-md hover:bg-gray-600 transition-colors"
           >
             Cancel
           </button>

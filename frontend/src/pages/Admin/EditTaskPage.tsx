@@ -38,16 +38,18 @@ const EditTaskPage: React.FC = () => {
   }, [taskId]);
 
   if (loading) {
-    return <div className="p-6 text-center">Loading task...</div>;
+    return <div className="p-8 text-center text-gray-300">Loading task...</div>;
   }
 
   if (error) {
     return (
-      <div className="p-6">
-        <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>
+      <div className="p-8">
+        <div className="bg-red-900 text-red-300 p-4 rounded-md mb-6">
+          {error}
+        </div>
         <button
           onClick={() => navigate("/admin/tasks")}
-          className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+          className="bg-gray-800 px-5 py-2 rounded-md hover:bg-gray-700 text-white transition-colors"
         >
           Back to Tasks
         </button>
@@ -57,13 +59,13 @@ const EditTaskPage: React.FC = () => {
 
   if (!task) {
     return (
-      <div className="p-6">
-        <div className="bg-yellow-100 text-yellow-700 p-3 rounded mb-4">
+      <div className="p-8">
+        <div className="bg-yellow-900 text-yellow-300 p-4 rounded-md mb-6">
           Task not found
         </div>
         <button
           onClick={() => navigate("/admin/tasks")}
-          className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+          className="bg-gray-800 px-5 py-2 rounded-md hover:bg-gray-700 text-white transition-colors"
         >
           Back to Tasks
         </button>
@@ -72,9 +74,11 @@ const EditTaskPage: React.FC = () => {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Edit Task</h1>
-      <TaskForm initialTask={task} isEditing={true} />
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-8 text-white">Edit Task</h1>
+      <div className="bg-gray-900 p-6 rounded-lg border border-gray-800">
+        <TaskForm initialTask={task} isEditing={true} />
+      </div>
     </div>
   );
 };

@@ -33,40 +33,44 @@ export default function AdminLeaderboard() {
   }, []);
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-lg mt-10">
-      <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-        Leaderboard
-      </h2>
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-8 text-white">Leaderboard</h1>
 
-      {loading && <p className="text-center">Loading...</p>}
-      {error && <p className="text-center text-red-500">{error}</p>}
+      <div className="bg-gray-900 rounded-lg border border-gray-800 p-6">
+        {loading && <p className="text-gray-300 text-center">Loading...</p>}
+        {error && <p className="text-red-400 text-center">{error}</p>}
 
-      {!loading && !error && (
-        <ul className="space-y-4">
-          {users.map((user, index) => {
-            let bgColor = "bg-gray-100"; // Default background
+        {!loading && !error && (
+          <ul className="space-y-3">
+            {users.map((user, index) => {
+              let rankStyles = "";
 
-            if (index === 0) bgColor = "bg-yellow-400"; // 🥇 Gold (1st place)
-            else if (index === 1)
-              bgColor = "bg-gray-300"; // 🥈 Silver (2nd place)
-            else if (index === 2) bgColor = "bg-orange-400"; // 🥉 Bronze (3rd place)
+              if (index === 0)
+                rankStyles = "border-l-4 border-yellow-500"; // Gold (1st place)
+              else if (index === 1)
+                rankStyles = "border-l-4 border-gray-400"; // Silver (2nd place)
+              else if (index === 2) rankStyles = "border-l-4 border-amber-600"; // Bronze (3rd place)
 
-            return (
-              <li
-                key={index}
-                className={`flex justify-between p-3 rounded-lg font-medium ${bgColor}`}
-              >
-                <span>
-                  #{index + 1} {user.username}
-                </span>
-                <span className="font-bold text-blue-600">
-                  {user.totalPoints} pts
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+              return (
+                <li
+                  key={index}
+                  className={`flex justify-between p-4 bg-gray-800 rounded-md ${rankStyles}`}
+                >
+                  <span className="text-white">
+                    <span className="inline-block w-8 text-gray-400">
+                      #{index + 1}
+                    </span>
+                    {user.username}
+                  </span>
+                  <span className="font-bold text-gray-300">
+                    {user.totalPoints} pts
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
