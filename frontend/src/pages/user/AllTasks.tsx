@@ -61,26 +61,34 @@ export default function Tasks() {
 
   const uploadImage = async (file: File): Promise<string> => {
     try {
+      console.log("Starting file upload:", file.name, file.type, file.size);
+
       const formData = new FormData();
       formData.append("image", file);
 
       const response = await fetch(`${LINK}/api/upload/image`, {
         method: "POST",
+        credentials: "include", // Add credentials to include cookies
         body: formData,
       });
 
       const data = await response.json();
-      console.log("Upload Response:", data); // Debugging log
+      console.log("Upload Response:", data);
 
       if (!response.ok) {
-        throw new Error(data.error || "Upload failed");
+        throw new Error(data.message || data.error || "Upload failed");
+      }
+
+      if (!data.url) {
+        throw new Error("No URL returned from server");
       }
 
       return data.url;
     } catch (error) {
       console.error("Upload error:", error);
-      alert(`Upload failed: ${(error as Error).message}`);
-      throw new Error("Upload failed: Unknown error");
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown upload error";
+      throw new Error(`Upload failed: ${errorMessage}`);
     }
   };
 
@@ -91,12 +99,23 @@ export default function Tasks() {
     }
 
     setUploading(true);
+    let imageUrl = "";
 
     try {
-      // 1. Upload image (already working)
-      const imageUrl = await uploadImage(image);
+      // Display upload status
+      console.log("Starting task submission process...");
 
-      // 2. Submit task - cookies will auto-send
+      // 1. Upload image
+      try {
+        imageUrl = await uploadImage(image);
+        console.log("Image upload successful:", imageUrl);
+      } catch (uploadError) {
+        console.error("Image upload failed:", uploadError);
+        throw uploadError; // Rethrow to be caught by outer catch
+      }
+
+      // 2. Submit task with image URL
+      console.log("Submitting task with image:", imageUrl);
       const submissionResponse = await fetch(
         `${LINK}/api/user/tasks/${selectedTask._id}/complete`,
         {
@@ -109,9 +128,10 @@ export default function Tasks() {
         }
       );
 
+      const submissionData = await submissionResponse.json();
+
       if (!submissionResponse.ok) {
-        const errorData = await submissionResponse.json();
-        throw new Error(errorData.message || "Failed to submit task");
+        throw new Error(submissionData.message || "Failed to submit task");
       }
 
       // 3. On success - show alert and redirect
@@ -119,7 +139,11 @@ export default function Tasks() {
       navigate("/auth/dashboard");
     } catch (error) {
       console.error("Submission error:", error);
-      alert(`Error: ${(error as Error).message}`);
+
+      // Improved error display
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error occurred";
+      alert(`Error: ${errorMessage}`);
     } finally {
       setUploading(false);
     }

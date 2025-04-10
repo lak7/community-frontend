@@ -17,16 +17,22 @@ const app = express();
 
 // to handle cors
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://community-partner.onrender.com"], // Adjust as needed
+  origin: [
+    "http://localhost:5173",
+    "https://community-partner.onrender.com",
+    "https://community-partner-app.onrender.com", // Add any additional frontend URLs
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
   optionsSuccessStatus: 200,
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"], // Explicitly allow necessary headers
 };
 
 // Middleware
 
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
