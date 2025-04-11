@@ -113,6 +113,7 @@ const SignupForm: React.FC = () => {
                   onChange={handleChange}
                   className="dark-input w-full p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                   required
+                  minLength={6}
                   placeholder={labelMap[field]}
                 />
               </div>
