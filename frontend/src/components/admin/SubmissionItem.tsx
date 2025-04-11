@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Submission } from "../../interfaces/Submission";
 import { approveSubmission, rejectSubmission } from "../../api/adminApi";
 
@@ -17,7 +17,7 @@ const SubmissionItem: React.FC<SubmissionItemProps> = ({
   const [error, setError] = useState("");
   // console.log("submission:", submission);
   // console.log("Submitted At:", submission.completedAt);
-  
+
   const handleApprove = async () => {
     setLoading(true);
     setError("");
@@ -37,7 +37,7 @@ const SubmissionItem: React.FC<SubmissionItemProps> = ({
     } finally {
       setLoading(false);
     }
-    window.location.reload()
+    window.location.reload();
   };
 
   const handleReject = async () => {
@@ -59,7 +59,7 @@ const SubmissionItem: React.FC<SubmissionItemProps> = ({
     } finally {
       setLoading(false);
     }
-    window.location.reload()
+    window.location.reload();
   };
 
   const submissionDate = submission.completedAt
