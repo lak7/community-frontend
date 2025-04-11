@@ -6,8 +6,8 @@ import { LINK } from "../constant";
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState<LoginFormData>({
-    email: "paras022chatan@gamil.com",
-    password: "paras0422",
+    email: "",
+    password: "",
   });
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -27,17 +27,16 @@ const Login: React.FC = () => {
     setLoading(true);
 
     try {
-      console.log("Sending login request with:", formData);
+      console.log("Sending login request to:", `${LINK}/api/auth/login`);
 
-      const response = await api.post<User>(`${LINK}/api/auth/login`, formData);
+      const response = await api.post<User>("/api/auth/login", formData);
 
       console.log("Login response:", response.data);
 
-      // Store user info (not token) in localStorage
+      // Store user info in localStorage
       localStorage.setItem("user", JSON.stringify(response.data));
-      // document.cookie=JSON.stringify(response.data);
-      console.log("Lakshay ", response.data.role);
       localStorage.setItem("userRole", response.data.role);
+
       // Redirect based on role
       if (response.data.role === "admin") {
         navigate("/admin");
@@ -46,9 +45,17 @@ const Login: React.FC = () => {
       }
     } catch (err: any) {
       console.error("Login error:", err);
-      setError(
-        err.response?.data?.message || "Login failed. Please try again."
-      );
+
+      // More detailed error handling
+      if (err.message === "Network Error") {
+        setError(
+          "Network error: Unable to connect to the server. Please check your internet connection and try again."
+        );
+      } else {
+        setError(
+          err.response?.data?.message || "Login failed. Please try again."
+        );
+      }
     } finally {
       setLoading(false);
     }

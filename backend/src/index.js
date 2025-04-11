@@ -17,15 +17,18 @@ const app = express();
 
 // to handle cors
 const corsOptions = {
-  origin: "*", // Allow access from all origins
+  origin: [
+    "https://community-partner.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:3000",
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
   optionsSuccessStatus: 200,
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"], // Explicitly allow necessary headers
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
 };
 
 // Middleware
-
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
