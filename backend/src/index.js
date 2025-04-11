@@ -17,12 +17,7 @@ const app = express();
 
 // to handle cors
 const corsOptions = {
-  origin: [
-    "http://localhost:5173",
-    "https://community-partner.onrender.com",
-    "https://community-partner-app.onrender.com",
-    "https://community-partner.vercel.app/", // Add any additional frontend URLs
-  ],
+  origin: "*", // Allow access from all origins
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
   optionsSuccessStatus: 200,
