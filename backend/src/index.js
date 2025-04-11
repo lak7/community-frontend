@@ -20,7 +20,8 @@ const corsOptions = {
   origin: [
     "http://localhost:5173",
     "https://community-partner.onrender.com",
-    "https://community-partner-app.onrender.com", // Add any additional frontend URLs
+    "https://community-partner-app.onrender.com",
+    "https://community-partner.vercel.app/", // Add any additional frontend URLs
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
